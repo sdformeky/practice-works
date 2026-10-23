@@ -4,7 +4,7 @@ Coursework from my programming studies at college (specialty 09.02.07, Informati
 
 The programs are console apps unless stated otherwise. All user-facing text is in Russian.
 
-**Languages:** Python · Dart / Flutter · JavaScript
+**Languages:** Python · Dart / Flutter · JavaScript · C# · Java
 
 ## Contents
 
@@ -23,6 +23,13 @@ The programs are console apps unless stated otherwise. All user-facing text is i
 | 11 | [OOP basics](#dart-03--oop-basics) | Dart | Classes, inheritance, abstract classes, generics, operator overloading, static methods |
 | 12 | [Notes app](#dart-04--flutter-notes) | Flutter | `StatefulWidget`, `ListView.builder`, adding / editing / deleting notes |
 | 13 | [Expense tracker](#javascript-01--expense-tracker) | JavaScript | Arrays of objects, CRUD functions, grouping by category |
+| 14 | [Sorting algorithms](#c-01--sorting-algorithms) | C# | Bubble, shaker, selection, insertion and merge sort |
+| 15 | [Text file processing](#c-02--text-file-processing) | C# | `System.IO`, reading and analyzing files, writing results |
+| 16 | [Car rental](#c-03--car-rental) | C# | Classes, inheritance, arrays, console menu |
+| 17 | [WPF calculator](#c-04--wpf-calculator) | C# / WPF | XAML layout, event handlers, DEC/BIN/HEX number systems |
+| 18 | [WPF library](#c-05--wpf-library) | C# / WPF | Entity Framework (database-first), SQL Server, CRUD in multiple windows |
+| 19 | [Store management](#java-01--store-management) | Java | OOP: inheritance, roles, saving data to files |
+| 20 | [Client-server chat with auth](#java-02--client-server-chat-with-auth) | Java | `ServerSocket`, a thread per client, registration and login |
 
 ## Repository structure
 
@@ -42,8 +49,17 @@ practice-works/
 │   ├── 02-grade-journal/
 │   ├── 03-oop-basics/
 │   └── 04-flutter-notes/
-└── javascript/
-    └── 01-expense-tracker/
+├── javascript/
+│   └── 01-expense-tracker/
+├── csharp/
+│   ├── 01-sorting-algorithms/
+│   ├── 02-text-file-processing/
+│   ├── 03-car-rental/
+│   ├── 04-wpf-calculator/
+│   └── 05-wpf-library/
+└── java/
+    ├── 01-store-management/
+    └── 02-client-server-auth/
 ```
 
 ---
@@ -264,11 +280,107 @@ node expense_tracker.js
 
 ---
 
+## C#
+
+Requires the [.NET 8 SDK](https://dotnet.microsoft.com/download). The WPF apps (04, 05) run on Windows only.
+
+### C# 01 — Sorting algorithms
+
+`csharp/01-sorting-algorithms/`
+
+Five sorting algorithms implemented by hand on an `int[]` array: bubble, shaker (cocktail), selection, insertion and merge sort.
+
+```bash
+dotnet run --project "csharp/01-sorting-algorithms/pw 5.5 c#"
+```
+
+### C# 02 — Text file processing
+
+`csharp/02-text-file-processing/`
+
+A menu-driven program that works with a text file the user picks (folder + file name):
+
+1. find out the type of a character;
+2. check whether the file contains a given text;
+3. find the length of the longest word;
+4. print the file without spaces.
+
+Each result is written to a new file in the same folder.
+
+### C# 03 — Car rental
+
+`csharp/03-car-rental/`
+
+A car rental fleet built on a `Transport` → `CarRent` class hierarchy. You can:
+
+- add cars;
+- list all cars;
+- list cars available for rent;
+- list cars that need refueling or service (based on mileage and fuel level).
+
+### C# 04 — WPF calculator
+
+`csharp/04-wpf-calculator/`
+
+A desktop calculator in WPF:
+
+- arithmetic, square root, sign change, backspace and clear;
+- input from both the on-screen buttons and the keyboard;
+- display in **DEC / BIN / HEX**;
+- configurable rounding precision.
+
+### C# 05 — WPF library
+
+`csharp/05-wpf-library/`
+
+A library management app in WPF on a SQL Server database, accessed through Entity Framework (database-first, `.edmx` model). It has separate windows for **books, genres, readers and loans**, each with a list plus add / edit / delete dialogs.
+
+Set your SQL Server connection in `App.config` (replace `YOUR_PASSWORD`).
+
+---
+
+## Java
+
+Requires JDK 17+.
+
+### Java 01 — Store management
+
+`java/01-store-management/`
+
+A console store with two roles:
+
+- **Employee:** manages products (add, remove, change price, restock).
+- **Customer:** tops up a balance and buys products, paying from that balance.
+
+Users and products are saved to text files and loaded on start (`FileManager`).
+
+```bash
+cd java/01-store-management && javac -d out src/*.java && java -cp out Main
+```
+
+### Java 02 — Client-server chat with auth
+
+`java/02-client-server-auth/`
+
+A TCP chat with registration and login:
+
+- **`server/`:** `ServerSocket` with a separate handler thread per client. `AuthService` stores users in a file and checks logins and passwords.
+- **`client/`:** logs in or registers, then sends messages. A background thread prints incoming messages.
+
+```bash
+cd java/02-client-server-auth/server && javac -d out src/*.java && java -cp out Main   # terminal 1
+cd java/02-client-server-auth/client && javac -d out src/*.java && java -cp out Main   # terminal 2+
+```
+
+---
+
 ## Other projects
 
 Bigger projects live in their own repositories:
 
 - [uspehNeizbejenboot](https://github.com/sdformeky/uspehNeizbejenboot): an online school built as Spring Cloud microservices (Java, Spring Boot, Eureka, Gateway, JWT, PostgreSQL).
 - [rimweb](https://github.com/sdformeky/rimweb): a lab equipment inventory system (Python, FastAPI, SQLAlchemy, Jinja2, REST API, JWT auth).
-- [police-reports-db](https://github.com/sdformeky/police-reports-db): a Dart console app with a 9-table SQLite database and the repository pattern.
+- [online-shop-dotnet](https://github.com/sdformeky/online-shop-dotnet): an online shop on ASP.NET Core, both as an MVC site and as a REST Web API (EF Core, SQL Server).
+- [crm-spring](https://github.com/sdformeky/crm-spring): a CRM on Spring Boot, Thymeleaf and PostgreSQL.
+- [police-reports-db](https://github.com/sdformeky/police-reports-db): a police reports database as a Dart/SQLite console app and a Node.js/Express/PostgreSQL web app.
 - [flutter-ui-screens](https://github.com/sdformeky/flutter-ui-screens): four mobile screens recreated in Flutter from design mockups.

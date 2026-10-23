@@ -15,3 +15,10 @@ countryjson
 books.txt
 users.txt
 borrowed_books.txt
+
+# runtime data of the java programs
+java/**/*.txt
+# .NET build output
+bin/
+obj/
+.vs/

@@ -1,0 +1,29 @@
+﻿<Window x:Class="pw16c.GenreAddEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Жанр"
+        Height="200"
+        Width="400">
+
+    <Grid Margin="10">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Название жанра"/>
+
+        <TextBox Grid.Row="1"
+                 Name="txtGenreName"
+                 Margin="0,5,0,5"/>
+
+        <Button Grid.Row="2"
+                Content="Сохранить"
+                Height="30"
+                Click="Save_Click"/>
+
+    </Grid>
+
+</Window>
