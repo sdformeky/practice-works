@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+venv/
+.venv/
+.env
+
+# files the programs generate when run
+stats/
+processed/
+imgs200/
+*.pkl
+*.csv
+stats.json
+countryjson
+books.txt
+users.txt
+borrowed_books.txt
