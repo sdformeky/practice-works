@@ -270,5 +270,5 @@ Bigger projects live in their own repositories:
 
 - [uspehNeizbejenboot](https://github.com/sdformeky/uspehNeizbejenboot): an online school built as Spring Cloud microservices (Java, Spring Boot, Eureka, Gateway, JWT, PostgreSQL).
 - [rimweb](https://github.com/sdformeky/rimweb): a lab equipment inventory system (Python, FastAPI, SQLAlchemy, Jinja2, REST API, JWT auth).
-- [dartdbwentwrong](https://github.com/sdformeky/dartdbwentwrong): a Dart console app with a SQLite database and the repository pattern.
-- [pw1rmp](https://github.com/sdformeky/pw1rmp): a multi-screen Flutter UI layout.
+- [police-reports-db](https://github.com/sdformeky/police-reports-db): a Dart console app with a 9-table SQLite database and the repository pattern.
+- [flutter-ui-screens](https://github.com/sdformeky/flutter-ui-screens): four mobile screens recreated in Flutter from design mockups.
