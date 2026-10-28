@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace CalcWpf
+namespace pwc14
 {
     /// <summary>
     /// Interaction logic for App.xaml

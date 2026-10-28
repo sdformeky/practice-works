@@ -1,0 +1,266 @@
+﻿<Window x:Class="pwc15.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Блокнот"
+        Height="600"
+        Width="900"
+        MinHeight="400"
+        MinWidth="600">
+    <!--
+        DockPanel — главный контейнер окна.
+        Меню и тулбар закреплены сверху, строка состояния — снизу,
+        панель поиска/замены — сверху (под тулбаром, изначально скрыта),
+        RichTextBox занимает всё оставшееся место.
+    -->
+    <DockPanel>
+
+        <!--
+            Menu — главное меню программы.
+            DockPanel.Dock="Top" закрепляет меню в верхней части окна.
+        -->
+        <Menu DockPanel.Dock="Top">
+            <!-- Раздел "Файл" -->
+            <MenuItem Header="Файл">
+                <MenuItem Header="Создать" Click="NewFile_Click"/>
+                <MenuItem Header="Открыть..." Click="OpenFile_Click"/>
+                <Separator/>
+                <MenuItem Header="Сохранить" Click="SaveFile_Click"/>
+                <MenuItem Header="Сохранить как..." Click="SaveAsFile_Click"/>
+                <Separator/>
+                <MenuItem Header="Печать..." Click="PrintFile_Click"/>
+                <Separator/>
+                <MenuItem Header="Выход" Click="Exit_Click"/>
+            </MenuItem>
+            <!-- Раздел "Правка" -->
+            <MenuItem Header="Правка">
+                <MenuItem Header="Отменить" Click="Undo_Click"/>
+                <MenuItem Header="Повторить" Click="Redo_Click"/>
+                <Separator/>
+                <MenuItem Header="Вырезать" Click="Cut_Click"/>
+                <MenuItem Header="Копировать" Click="Copy_Click"/>
+                <MenuItem Header="Вставить" Click="Paste_Click"/>
+                <MenuItem Header="Удалить" Click="Delete_Click"/>
+                <Separator/>
+                <MenuItem Header="Найти" Click="ShowFindPanel_Click"/>
+                <MenuItem Header="Заменить" Click="ShowReplacePanel_Click"/>
+                <Separator/>
+                <MenuItem Header="Выделить всё" Click="SelectAll_Click"/>
+            </MenuItem>
+            <!-- Раздел "Формат" -->
+            <MenuItem Header="Формат">
+                <MenuItem Header="Перенос по словам" IsCheckable="True" IsChecked="True" Click="WordWrap_Click"/>
+                <Separator/>
+                <MenuItem Header="Увеличить шрифт" Click="IncreaseFont_Click"/>
+                <MenuItem Header="Уменьшить шрифт" Click="DecreaseFont_Click"/>
+            </MenuItem>
+            <!-- Раздел "Справка" -->
+            <MenuItem Header="Справка">
+                <MenuItem Header="О программе" Click="About_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <!--
+            ToolBarTray — контейнер для панели инструментов форматирования.
+            Размещается сразу под главным меню.
+        -->
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <!-- Кнопка жирного начертания -->
+                <Button Content="Ж"
+                        Width="32"
+                        FontWeight="Bold"
+                        ToolTip="Жирный"
+                        Click="Bold_Click"/>
+                <!-- Кнопка курсива -->
+                <Button Content="К"
+                        Width="32"
+                        FontStyle="Italic"
+                        ToolTip="Курсив"
+                        Click="Italic_Click"/>
+                <!-- Кнопка подчёркивания -->
+                <Button Content="Ч"
+                        Width="32"
+                        ToolTip="Подчёркнутый"
+                        Click="Underline_Click"/>
+                <Separator/>
+                <!-- ComboBox выбора шрифта (заполняется из C#) -->
+                <ComboBox x:Name="FontFamilyComboBox"
+                          Width="180"
+                          ToolTip="Шрифт"
+                          SelectionChanged="FontFamilyComboBox_SelectionChanged"/>
+                <!-- ComboBox выбора размера шрифта (заполняется из C#) -->
+                <ComboBox x:Name="FontSizeComboBox"
+                          Width="70"
+                          ToolTip="Размер шрифта"
+                          SelectionChanged="FontSizeComboBox_SelectionChanged"/>
+                <Separator/>
+                <!-- ComboBox выбора цвета текста -->
+                <ComboBox x:Name="FontColorComboBox"
+                          Width="120"
+                          ToolTip="Цвет текста"
+                          SelectionChanged="FontColorComboBox_SelectionChanged">
+                    <ComboBoxItem Content="Чёрный" Tag="Black"/>
+                    <ComboBoxItem Content="Красный" Tag="Red"/>
+                    <ComboBoxItem Content="Синий" Tag="Blue"/>
+                    <ComboBoxItem Content="Зелёный" Tag="Green"/>
+                    <ComboBoxItem Content="Серый" Tag="Gray"/>
+                </ComboBox>
+                <Separator/>
+                <!-- Кнопки выравнивания абзаца -->
+                <Button Content="⬅"
+                        Width="32"
+                        ToolTip="Выровнять по левому краю"
+                        Click="AlignLeft_Click"/>
+                <Button Content="↔"
+                        Width="32"
+                        ToolTip="Выровнять по центру"
+                        Click="AlignCenter_Click"/>
+                <Button Content="➡"
+                        Width="32"
+                        ToolTip="Выровнять по правому краю"
+                        Click="AlignRight_Click"/>
+                <Button Content="☰"
+                        Width="32"
+                        ToolTip="Выровнять по ширине"
+                        Click="AlignJustify_Click"/>
+                <Separator/>
+
+                <!--
+                    Блок "Автоформатирование" (Вариант 6).
+                    ComboBox со стилями автоформатирования,
+                    CheckBox "Автоматически применять после выбора"
+                    и кнопка "Применить" для ручного режима.
+                -->
+                <TextBlock Text="Автоформат:"
+                           VerticalAlignment="Center"
+                           Margin="0,0,5,0"/>
+                <ComboBox x:Name="AutoFormatComboBox"
+                          Width="160"
+                          ToolTip="Вариант автоформатирования"
+                          SelectionChanged="AutoFormatComboBox_SelectionChanged">
+                    <ComboBoxItem Content="Сделать заголовком"/>
+                    <ComboBoxItem Content="Сделать важным"/>
+                    <ComboBoxItem Content="Сделать примечанием"/>
+                    <ComboBoxItem Content="Сделать кодом"/>
+                    <ComboBoxItem Content="Сбросить оформление"/>
+                </ComboBox>
+                <Button x:Name="ApplyAutoFormatButton"
+                        Content="Применить"
+                        Width="80"
+                        Margin="5,0,5,0"
+                        Click="ApplyAutoFormatButton_Click"/>
+                <CheckBox x:Name="AutoApplyCheckBox"
+                          Content="Автоматически применять после выбора"
+                          VerticalAlignment="Center"
+                          IsChecked="True"/>
+            </ToolBar>
+        </ToolBarTray>
+
+        <!--
+            Панель поиска и замены.
+            Изначально скрыта (Visibility="Collapsed").
+            Появляется после: Правка → Найти / Правка → Заменить.
+        -->
+        <Border x:Name="FindPanel"
+                DockPanel.Dock="Top"
+                Background="#EEEEEE"
+                Padding="8"
+                Visibility="Collapsed">
+            <StackPanel Orientation="Horizontal">
+                <!-- Надпись перед полем поиска -->
+                <TextBlock Text="Найти:"
+                           VerticalAlignment="Center"
+                           Margin="0,0,5,0"/>
+                <!-- Поле для текста поиска -->
+                <TextBox x:Name="FindTextBox"
+                         Width="180"
+                         Margin="0,0,10,0"/>
+                <!-- Кнопка запуска поиска следующего совпадения -->
+                <Button Content="Найти далее"
+                        Width="90"
+                        Margin="0,0,10,0"
+                        Click="FindNext_Click"/>
+
+                <!-- Элементы замены изначально скрыты -->
+                <TextBlock x:Name="ReplaceTextBlock"
+                           Text="Заменить:"
+                           VerticalAlignment="Center"
+                           Margin="0,0,5,0"
+                           Visibility="Collapsed"/>
+                <TextBox x:Name="ReplaceTextBox"
+                         Width="180"
+                         Margin="0,0,10,0"
+                         Visibility="Collapsed"/>
+                <Button x:Name="ReplaceButton"
+                        Content="Заменить"
+                        Width="80"
+                        Margin="0,0,10,0"
+                        Visibility="Collapsed"
+                        Click="Replace_Click"/>
+                <Button x:Name="ReplaceAllButton"
+                        Content="Заменить всё"
+                        Width="100"
+                        Margin="0,0,10,0"
+                        Visibility="Collapsed"
+                        Click="ReplaceAll_Click"/>
+
+                <!-- Галочка "Учитывать регистр" -->
+                <CheckBox x:Name="CaseSensitiveCheckBox"
+                          Content="Учитывать регистр"
+                          VerticalAlignment="Center"
+                          Margin="0,0,10,0"/>
+
+                <!-- Кнопка скрытия панели -->
+                <Button Content="Закрыть"
+                        Width="70"
+                        Click="CloseFindPanel_Click"/>
+            </StackPanel>
+        </Border>
+
+        <!--
+            StatusBar — строка состояния внизу окна.
+        -->
+        <StatusBar DockPanel.Dock="Bottom">
+            <!-- Текущая строка и столбец курсора -->
+            <StatusBarItem>
+                <TextBlock x:Name="LineColumnText" Text="Строка: 1, Столбец: 1"/>
+            </StatusBarItem>
+            <Separator/>
+            <!-- Количество символов -->
+            <StatusBarItem>
+                <TextBlock x:Name="CharCountText" Text="Символов: 0"/>
+            </StatusBarItem>
+            <Separator/>
+            <!-- Путь к текущему файлу -->
+            <StatusBarItem>
+                <TextBlock x:Name="FilePathText" Text="Новый файл"/>
+            </StatusBarItem>
+            <Separator/>
+            <!-- Последний применённый вариант автоформатирования -->
+            <StatusBarItem>
+                <TextBlock x:Name="AutoFormatStatusText" Text="Автоформат: —"/>
+            </StatusBarItem>
+        </StatusBar>
+
+        <!--
+            RichTextBox — основной редактор блокнота.
+            Поддерживает форматирование выделенного текста:
+            шрифт, размер, цвет, начертание, выравнивание.
+            x:Name="Editor" сохранён, чтобы не менять весь C#-код.
+        -->
+        <RichTextBox x:Name="Editor"
+                     AcceptsTab="True"
+                     VerticalScrollBarVisibility="Auto"
+                     HorizontalScrollBarVisibility="Auto"
+                     FontFamily="Consolas"
+                     FontSize="16"
+                     Padding="8"
+                     TextChanged="Editor_TextChanged"
+                     SelectionChanged="Editor_SelectionChanged">
+            <FlowDocument>
+                <Paragraph/>
+            </FlowDocument>
+        </RichTextBox>
+
+    </DockPanel>
+</Window>
